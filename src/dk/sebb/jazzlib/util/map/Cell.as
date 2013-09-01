@@ -2,9 +2,9 @@
  * TODO: Clean up, move away from using Nape's Vec2 class
  */
 
-package dk.sebb.util
+package dk.sebb.jazzlib.util.map
 {
-	import nape.geom.Vec2;
+	import flash.geom.Point;
 
 	public class Cell
 	{
@@ -35,8 +35,8 @@ package dk.sebb.util
 			super();
 		}
 		
-		public function getNomalizedPointPosition(cellSize:Number):Vec2 {
-			return new Vec2(getNormalizedX(cellSize), getNormalizedY(cellSize));
+		public function getNomalizedPoint(cellSize:Number):Point {
+			return new Point(getNormalizedX(cellSize), getNormalizedY(cellSize));
 		}
 		
 		public function getNormalizedX(cellSize:Number):Number {

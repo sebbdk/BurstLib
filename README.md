@@ -1,4 +1,4 @@
-# Jazzlib
+# Jazzlib - Draft
 
 JazzLib is a mini framework and a library collection, using git sub-repositories, that is made for quick game prototyping.
 

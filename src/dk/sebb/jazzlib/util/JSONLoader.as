@@ -1,8 +1,7 @@
-package dk.sebb.util
+package dk.sebb.jazzlib.util
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IEventDispatcher;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	

@@ -4,14 +4,11 @@
  * Also more comments
  */
 
-package dk.sebb.util
+package dk.sebb.jazzlib.util.map
 {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.geom.Matrix;
-	import flash.geom.Point;
-	
-	import nape.geom.Vec2;
 
 	public class AStar
 	{
@@ -46,8 +43,8 @@ package dk.sebb.util
 			return instance;
 		}
 		
-		public function getCellFromCoords(pos:Vec2):Cell {
-			return getCell(Math.floor(pos.x/cellSize), Math.floor(pos.y/cellSize));
+		public function getCellFromCoords(x:int, y:int):Cell {
+			return getCell(Math.floor(x/cellSize), Math.floor(y/cellSize));
 		}
 		
 		public function setPointFromCoords(x:Number,y:Number, type:uint = 1):void {
@@ -111,13 +108,13 @@ package dk.sebb.util
 		
 		
 		//error returns path that does not work?! when the path is blocked
-		public function findPath(from:Vec2, to:Vec2, multiply:Boolean = true):Array {
+		public function findPath(fromX:int, fromY:int, toX:int, toY:int, multiply:Boolean = true):Array {
 			reset();
 			
-			currentCell = getCell(from.x, from.y);
-			Cell(currentCell).parentCell = getCell(from.x, from.y);
-			originCell = getCell(from.x, from.y);
-			destinationCell = getCell(to.x, to.y);
+			currentCell = getCell(fromX, fromY);
+			Cell(currentCell).parentCell = getCell(fromX, fromY);
+			originCell = getCell(fromX, fromY);
+			destinationCell = getCell(toX, toY);
 			
 			//run until we either reach max iterations or we have solved the path
 			var c:int = 0;
@@ -137,9 +134,9 @@ package dk.sebb.util
 				};
 				
 				if(multiply) {
-					solutionPath.push(new Vec2(cellPointer.x*cellSize + cellSize/2, cellPointer.y*cellSize + cellSize/2));				
+					solutionPath.push([cellPointer.x*cellSize + cellSize/2, cellPointer.y*cellSize + cellSize/2]);				
 				} else {
-					solutionPath.push(new Vec2(cellPointer.x, cellPointer.y));				
+					solutionPath.push([cellPointer.x, cellPointer.y]);				
 				}
 				
 				cellPointer = cellPointer.parentCell;					

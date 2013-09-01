@@ -1,4 +1,4 @@
-package dk.sebb.util
+package dk.sebb.jazzlib.util
 {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;

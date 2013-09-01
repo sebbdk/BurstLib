@@ -1,4 +1,4 @@
-package dk.sebb.util
+package dk.sebb.jazzlib.util
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
