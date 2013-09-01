@@ -6,7 +6,6 @@ package
 	{
 		public function JazzLib()
 		{
-			
 		}
 	}
 }
