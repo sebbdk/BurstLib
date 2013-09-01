@@ -1,3 +1,6 @@
+/**
+ * A simple class used to quicly load and parse a JSON file
+ */
 package dk.sebb.jazzlib.util
 {
 	import flash.events.Event;

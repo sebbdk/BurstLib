@@ -1,7 +1,6 @@
 /**
- * TODO: Clean up, move away from using Nape's Vec2 class
+ * This class is used for pathfinding and represents a cell/point in a map and whatever is on it
  */
-
 package dk.sebb.jazzlib.util.map
 {
 	import flash.geom.Point;
@@ -33,18 +32,6 @@ package dk.sebb.jazzlib.util.map
 			x = _x;
 			y = _y;
 			super();
-		}
-		
-		public function getNomalizedPoint(cellSize:Number):Point {
-			return new Point(getNormalizedX(cellSize), getNormalizedY(cellSize));
-		}
-		
-		public function getNormalizedX(cellSize:Number):Number {
-			return x*cellSize+(cellSize/2);
-		}
-		
-		public function getNormalizedY(cellSize:Number):Number {
-			return y*cellSize-(cellSize/2);
 		}
 	}
 }

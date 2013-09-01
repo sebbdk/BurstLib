@@ -18,7 +18,7 @@ package dk.sebb.jazzlib.util.map
 		public function AStarMap() {}
 
 /**
- * sets a cell at the giveb position in the map
+ * Sets a cell at the give position in the map
  * @param c Cell
  * @return void
  */

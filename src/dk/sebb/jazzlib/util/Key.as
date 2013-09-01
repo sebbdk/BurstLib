@@ -1,3 +1,7 @@
+/**
+ * This is a static used to manage which keys are currently pressed
+ * To make this class work please call the static method Key.init with stage as a arguement to allot it to bind events to the keyboard
+ */
 package dk.sebb.jazzlib.util
 {
 	import flash.display.Stage;
@@ -12,42 +16,58 @@ package dk.sebb.jazzlib.util
 		private static var keyMap:Array = [];
 		
 		public static var stage:Stage;
-		public static var _instance:Key;
-		
+
+/**
+ * This class cannot be instantiated.
+ * @return void
+ */
 		public static function get instance():Key {
-			if(!_instance) {
-				throw new Error('The KeyMap Class has not been initiated with a stage reference!');
-			}
-			
-			return _instance;
+			throw new Error('The Key Class is not supposed to be instatiated!');
 		}
-		
+
+/**
+ * Registre stage to allow binding events to the keyboard
+ * Only does so on the first call
+ * @param  _stage Stage
+ * @return Void
+ */
 		public static function init(_stage:Stage):void {
-			if(!_instance) {//ignore multiple calls
+			if(!_stage) {
 				stage = _stage;
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-				_instance = new Key();
 			}
 		}
-		
+
+/**
+ * Return a boolean describing if a key is currently held down
+ * Used in conjunction with the Flash Keyboard class like this: Key.isDown(Keyboard.W);
+ * @param  keyCode int
+ * @return Boolean
+ */
 		public static function isDown(keyCode:int):Boolean {
 			return heldKeys[keyCode] === true;
 		}
-		
+
+/**
+ * Regitreres a key as down
+ * @param  evt KeyboardEvent
+ * @return void
+ */
 		private static function onKeyDown(evt:KeyboardEvent):void {
 			heldKeys[evt.keyCode] = true;
-			
-			//record when the key was pressed down
 			var myDate:Date = new Date();
 			var currentTime:int = Math.round(myDate.getTime());
 			keyDownRecord[currentTime] = evt.keyCode;
 		}
-		
+
+/**
+ * Removes a key as being registrered as down
+ * @param  evt KeyboardEvent
+ * @return void
+ */
 		private static function onKeyUp(evt:KeyboardEvent):void {
 			heldKeys[evt.keyCode] = false;
-			
-			//record when the key was pressed up
 			var myDate:Date = new Date();
 			var currentTime:int = Math.round(myDate.getTime());
 			keyUpRecord[currentTime] = evt.keyCode;
