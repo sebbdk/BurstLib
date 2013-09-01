@@ -1,3 +1,11 @@
+/**
+ * A screenshake class changes a random x and y value for a specified amount of time
+ * simply create instance start it and update a view with the x/y coords on enterframe
+ *
+ * Hmm could be done simpler?
+ * maybe loop over a effect array after each frame?
+ * Take into consideration other possible effects like colorfilter changes
+ */
 package dk.sebb.jazzlib.misc
 {
 	import flash.events.Event;

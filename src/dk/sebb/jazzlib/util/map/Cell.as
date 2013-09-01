@@ -25,8 +25,6 @@ package dk.sebb.jazzlib.util.map
 		
 		public var isPath:Boolean;
 		
-		private var _inhabitans:Array = [];
-		
 		public function Cell(_cellType:uint = 0, _x:int = 0, _y:int = 0) {
 			cellType = _cellType;
 			x = _x;
