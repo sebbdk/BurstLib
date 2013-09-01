@@ -1,12 +1,10 @@
-package dk.sebb.jazzlib.util
+package dk.sebb.jazzlib.misc
 {
-	import flash.display.MovieClip;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 
-	public class ShakeEffect
+	public class ScreenshakeEffect
 	{
 		private var coordX:Number = 0;  
 		private var coordY:Number = 0;
@@ -17,7 +15,7 @@ package dk.sebb.jazzlib.util
 		
 		public var magnitude:Number = 5;
 		
-		public function ShakeEffect() {
+		public function ScreenshakeEffect() {
 			timer.addEventListener(TimerEvent.TIMER, shakeImage);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, stop);
 		}

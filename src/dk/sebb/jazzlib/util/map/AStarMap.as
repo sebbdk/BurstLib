@@ -1,20 +1,13 @@
 /**
- * Should be rerwitten to be not so static for better resuabillety
- * 
- * Also more comments
+ * Barebone A* pathfinding algorythm class..
  */
-
 package dk.sebb.jazzlib.util.map
 {
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
-	import flash.geom.Matrix;
-
-	public class AStar
+	public class AStarMap
 	{
 		public var map:Array = new Array();
+		public var maxItterations:int = 2000;
 		
-		public const MAX_ITERATIONS:uint = 2000;
 		private var originCell:Cell;
 		private var destinationCell:Cell;
 		private var currentCell:Cell;
@@ -22,82 +15,42 @@ package dk.sebb.jazzlib.util.map
 		private var openList:Array;
 		private var closedList:Array;
 		
-		public static var cellSize:int = 32;
-		
-		private var bmpdata:BitmapData;
-		
-		public static var instance:AStar;
-		
-		public function AStar() {
-			if(instance) {
-				throw new Error("Cant instantiate any more Mapmodel, use static getinstance function instead.");
-			}
-			bmpdata = new BitmapData(700, 700, false, 0x0);
-			instance = this;
-		}
-		
-		public static function getInstance():AStar {
-			if(!instance) {
-				instance = new AStar();
-			}
-			return instance;
-		}
-		
-		public function getCellFromCoords(x:int, y:int):Cell {
-			return getCell(Math.floor(x/cellSize), Math.floor(y/cellSize));
-		}
-		
-		public function setPointFromCoords(x:Number,y:Number, type:uint = 1):void {
-			x = Math.floor((x)/cellSize);
-			y = Math.floor((y)/cellSize);
-			
-			if(map[x] == null){
-				map[x] = new Array();
-			}
-			
-			var cell:Cell = new Cell();
-			cell.cellType = type;
-			cell.x = x;
-			cell.y = y;
-			
-			map[x][y] = cell;
-		}
-		
-		public function drawScaled(obj:DisplayObject, thumbWidth:Number, thumbHeight:Number):BitmapData {
-			var m:Matrix = new Matrix();
-			m.scale(thumbWidth / 700, thumbHeight / 700);
-			var bmp:BitmapData = new BitmapData(thumbWidth, thumbHeight, false);
-			bmp.draw(obj, m);
-			return bmp;
-		}
-		
+		public function AStarMap() {}
+
+/**
+ * sets a cell at the giveb position in the map
+ * @param c Cell
+ * @return void
+ */
 		private function setCell(c:Cell):void {
 			map[c.x] = (map[c.x]) ? map[c.x]:new Array();
 			map[c.x][c.y] = c;
 		}
-		
-		private function getCell(x:int, y:int):Cell {
+
+/**
+ * Returns the given cell or null
+ * Please use this to avoid instead of getting cells directly from the map array
+ * @param  x
+ * @param  y
+ * @return Cell
+ */
+		public function getCell(x:int, y:int):Cell {
 			if(map[x] != null && map[x][y] != null) {
-				//Time hack... rework later with a handler function THIS IS BAD FOR REUSABILLETY! GAAAH!!
-				//FIX AS SOON AS POSSIBLE BLAAAH!
-				//This make smy soul acke...
-				if(!(map[x][y] is Cell)) {
-					var c:Cell = new Cell();
-					c.cellType = Cell.CELL_FILLED;
-					c.x = x;
-					c.y = y;
-					setCell(c)
-				}
+				var c:Cell = new Cell();
+				c.cellType = Cell.CELL_FILLED;
+				c.x = x;
+				c.y = y;
+				setCell(c)
 				return map[x][y];
-			} else {//Fix this too btw we should not alter the original array ...
-				var ec:Cell = new Cell();
-				ec.x = x;
-				ec.y = y;
-				setCell(ec)
-				return ec;
+			} else {
+				return null;
 			}
 		}
-		
+
+/**
+ * Resets the map inbetween each path search
+ * @return void
+ */
 		private function reset():void {
 			openList = new Array();
 			closedList = new Array();
@@ -105,10 +58,16 @@ package dk.sebb.jazzlib.util.map
 			currentCell = originCell;
 			closedList.push(originCell);
 		}
-		
-		
-		//error returns path that does not work?! when the path is blocked
-		public function findPath(fromX:int, fromY:int, toX:int, toY:int, multiply:Boolean = true):Array {
+
+/**
+ * Finds a path on the map and returns a array of points
+ * @param  fromX
+ * @param  fromY
+ * @param  toX
+ * @param  toY
+ * @return Array
+ */
+		public function findPath(fromX:int, fromY:int, toX:int, toY:int):Array {
 			reset();
 			
 			currentCell = getCell(fromX, fromY);
@@ -119,41 +78,47 @@ package dk.sebb.jazzlib.util.map
 			//run until we either reach max iterations or we have solved the path
 			var c:int = 0;
 			var solved:Boolean = false;
-			while(!solved && c < MAX_ITERATIONS) {
+			while(!solved && c < maxItterations) {
 				solved = nextStep();
 				c++;
+			}
+			
+			if(c === maxItterations) {
+				trace('Max map search itterations hit! is this intentional?');//hmm
 			}
 			
 			var solutionPath:Array = new Array();
 			var count:int = 0;
 			var cellPointer:Object = closedList[closedList.length - 1];
 			while(cellPointer != originCell) {
-				if(count++ > 800) {//prevent a hang in case something goes awry
+				if(count++ > 800) {//prevent a hang in case something goes awry.....????..
+					//nope.. this is done when the origin cell is not found within 800 steps, 
+					//do some testing, this should NEVER happen, aka not seen when i used it the last time
 					trace("i am hanging!");
 					return null
 				};
 				
-				if(multiply) {
-					solutionPath.push([cellPointer.x*cellSize + cellSize/2, cellPointer.y*cellSize + cellSize/2]);				
-				} else {
-					solutionPath.push([cellPointer.x, cellPointer.y]);				
-				}
-				
+				solutionPath.push([cellPointer.x, cellPointer.y]);
 				cellPointer = cellPointer.parentCell;					
 			}
 			
 			solutionPath.reverse();
 			
+			////////////make a way to debug the path that is human readable
 			/*
 			trace('Solution path:');
 			for each(var cell:Cell in solutionPath) {
-				trace(cell.x, cell.y);
+			trace(cell.x, cell.y);
 			}
 			*/
 			
 			return solutionPath;
 		}
-		
+
+/**
+ * Attempts to find the next step
+ * @return Boolean
+ */
 		private function nextStep():Boolean {
 			if(currentCell == destinationCell) {
 				closedList.push(destinationCell);
