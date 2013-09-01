@@ -1,22 +1,22 @@
 /**
  * The LevelState has the common functionality of a gamelevel extend and override as needed
  */
-package dk.sebb.jazzlib.state
+package dk.sebb.jazzlib.controller
 {
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.utils.getTimer;
 	
-	import dk.sebb.jazzlib.state.model.LevelModel;
+	import dk.sebb.jazzlib.model.LevelModel;
 
-	public class LevelState extends BaseState
+	public class LevelController extends Controller
 	{
 		protected var lastFrameTime:int = 0;
 		protected var fps:int = 60;
 		protected var isPaused:Boolean = false;
-		protected var model:LevelModel;
+		public var model:LevelModel;
 		
-		public function LevelState(stage:Stage, fps:int = 60)
+		public function LevelController(stage:Stage, fps:int = 60, viewClass:Class = null)
 		{
 			this.fps = fps;
 			super(stage);
@@ -45,13 +45,6 @@ package dk.sebb.jazzlib.state
  * @return void
  */
 		public function unload():void {}
-
-/**
- * Loads the model
- * @return void
- */
-		public function load():void {}
-		
 
 /**
  * Updates all mobs, physics if you have any etc

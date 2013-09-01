@@ -1,11 +1,13 @@
 /**
  * Contains data of the loaded level, all level data should go here so it can be properly unloaded/loaded.
  */
-package dk.sebb.jazzlib.state.model
+package dk.sebb.jazzlib.model
 {
+	import flash.events.EventDispatcher;
+	
 	import dk.sebb.jazzlib.obj.Mob;
 
-	public dynamic class LevelModel
+	public dynamic class LevelModel extends EventDispatcher
 	{
 		public var mobs:Vector.<Mob> = new Vector.<Mob>();
 		
