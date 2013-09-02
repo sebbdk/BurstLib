@@ -6,12 +6,15 @@ package dk.sebb.jazzlib.model
 	import flash.events.EventDispatcher;
 	
 	import dk.sebb.jazzlib.obj.Mob;
+	import dk.sebb.jazzlib.obj.Player;
 
 	public dynamic class LevelModel extends EventDispatcher
 	{
 		public var mobs:Vector.<Mob> = new Vector.<Mob>();
+		public var player:Player;
 		
-		public function LevelModel() {}
+		public function LevelModel() {
+		}
 		
 /**
  * Removed the given mob from the vector/list of mobs
