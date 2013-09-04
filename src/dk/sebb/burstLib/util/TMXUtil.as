@@ -1,4 +1,4 @@
-package dk.sebb.jazzlib.util
+package dk.sebb.burstLib.util
 {
 	public class TMXUtil
 	{

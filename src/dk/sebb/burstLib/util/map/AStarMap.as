@@ -1,8 +1,10 @@
 /**
  * Barebone A* pathfinding algorythm class..
  */
-package dk.sebb.jazzlib.util.map
+package dk.sebb.burstLib.util.map
 {
+	
+
 	public class AStarMap
 	{
 		public var map:Array = new Array();
@@ -16,13 +18,17 @@ package dk.sebb.jazzlib.util.map
 		private var closedList:Array;
 		
 		public function AStarMap() {}
+		
+		public function getCellFromCoords(x:Number, y:Number, cellSize:int):Cell {
+			return getCell(Math.floor(x/cellSize), Math.floor(y/cellSize));
+		}
 
 /**
  * Sets a cell at the give position in the map
  * @param c Cell
  * @return void
  */
-		private function setCell(c:Cell):void {
+		public function setCell(c:Cell):void {
 			map[c.x] = (map[c.x]) ? map[c.x]:new Array();
 			map[c.x][c.y] = c;
 		}

@@ -1,31 +1,22 @@
 package
 {
 	import flash.display.Sprite;
-	import flash.events.Event;
 	
-	import dk.sebb.jazzlib.controller.TMXLevelController;
-	import dk.sebb.jazzlib.model.TMXLevelModel;
-	import dk.sebb.jazzlib.view.LevelView;
+	import dk.sebb.burstLib.state.TMXLevelState;
+	import dk.sebb.burstLib.util.Key;
 	
 	[SWF(backgroundColor="#999999", frameRate="60", height="600", width="800", quality="HIGH")]
 	public class TMXLevelDemo extends Sprite
 	{
-		public var controller:TMXLevelController;
-		public var view:LevelView;
+		public var levelState:TMXLevelState;
 		
 		public function TMXLevelDemo()
 		{
-			controller = new TMXLevelController(stage);
-			controller.addEventListener(Event.COMPLETE, setViewModel);
+			Key.init(stage);
 			
-			view = new LevelView();
-			addChild(view);
-			
-			controller.load('../levels/demo_001_basic/');
-		}
-		
-		private function setViewModel(evt:Event):void {
-			view.setModel(controller.model as TMXLevelModel);
+			levelState = new TMXLevelState(stage);
+			levelState.load('../levels/level01/');
+			addChild(levelState);
 		}
 	}
 }

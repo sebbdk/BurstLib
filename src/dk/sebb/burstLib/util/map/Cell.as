@@ -1,7 +1,7 @@
 /**
  * This class is used for pathfinding and represents a cell/point in a map and whatever is on it
  */
-package dk.sebb.jazzlib.util.map
+package dk.sebb.burstLib.util.map
 {
 	import flash.geom.Point;
 

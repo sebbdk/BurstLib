@@ -4,7 +4,7 @@
  *
  * To be continued, needs a some more spice?
  */
-package dk.sebb.jazzlib.util
+package dk.sebb.burstLib.util
 {
 	public class Clock
 	{

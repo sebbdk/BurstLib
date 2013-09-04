@@ -3,7 +3,7 @@
  * 
  * #TODO Change to use Points instead of Vec2
  */
-package dk.sebb.jazzlib.util
+package dk.sebb.burstLib.util
 {
 	import nape.geom.Vec2;
 

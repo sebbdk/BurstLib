@@ -1,7 +1,7 @@
 /**
  * A simple class used to quicly load and parse a JSON file
  */
-package dk.sebb.jazzlib.util
+package dk.sebb.burstLib.util
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

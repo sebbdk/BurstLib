@@ -6,7 +6,7 @@
  * maybe loop over a effect array after each frame?
  * Take into consideration other possible effects like colorfilter changes
  */
-package dk.sebb.jazzlib.misc
+package dk.sebb.burstLib.misc
 {
 	import flash.events.Event;
 	import flash.events.TimerEvent;

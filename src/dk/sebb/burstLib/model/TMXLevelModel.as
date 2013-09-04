@@ -1,17 +1,25 @@
 /**
  * remove Vec2 references, mobs should have a view attribute like done on the states?
  */
-package dk.sebb.jazzlib.model
+package dk.sebb.burstLib.model
 {
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.utils.getQualifiedClassName;
 	
-	import dk.sebb.jazzlib.util.JSONLoader;
+	import dk.sebb.burstLib.obj.BlockMob;
+	import dk.sebb.burstLib.obj.NPC;
+	import dk.sebb.burstLib.obj.Player;
+	import dk.sebb.burstLib.util.JSONLoader;
+	import dk.sebb.burstLib.util.map.AStarMap;
+	import dk.sebb.burstLib.util.map.Cell;
 	import dk.sebb.tiled.TMXLoader;
+	import dk.sebb.tiled.TileSet;
 	import dk.sebb.tiled.layers.Layer;
 	import dk.sebb.tiled.layers.ObjectLayer;
 	import dk.sebb.tiled.layers.TMXObject;
+	
+	import nape.geom.Vec2;
 
 	public dynamic class TMXLevelModel extends LevelModel
 	{
@@ -21,9 +29,11 @@ package dk.sebb.jazzlib.model
 		public var dataLoader:JSONLoader;
 		
 		public var parallaxLayers:Array = [];
-		public var collisionLayer:Layer;
+		public var functionLayer:Layer;
 		
 		public var spawns:Array = [];
+		
+		public var map:AStarMap = new AStarMap();
 		
 		public function TMXLevelModel(levelPath:String)
 		{
@@ -35,6 +45,8 @@ package dk.sebb.jazzlib.model
 		}
 		
 		public function onTMXLoaded(evt:Event):void {
+			unload();
+			
 			tmxLoader.removeEventListener(Event.COMPLETE, onTMXLoaded);
 			//get object layers
 			for each(var layer:Layer in tmxLoader.layers) {
@@ -52,12 +64,35 @@ package dk.sebb.jazzlib.model
 				}
 			}
 			
+			//setup player
+			player = player ? player:new Player();
+			if(spawns[0]) {
+				player.body.position = Vec2.fromPoint(spawns[0]);
+				addMob(player);
+			}
+			
+			//parse the map used for path finding
+			parseMap();
+			
+			//loads extra dat
 			if(tmxLoader.data) {
 				dataLoader = new JSONLoader(levelPath + tmxLoader.data);
 				dataLoader.addEventListener(Event.COMPLETE, onDataLoaded);
 				dataLoader.load();
 			} else {
 				dispatchEvent(new Event(Event.COMPLETE));
+			}
+		}
+		
+		public function parseMap():void {
+			var rowX:int = 0;
+			for each(var row:Array in functionLayer.map) {
+				var colY:int = 0;
+				for each(var col:Array in functionLayer.map) {
+					map.setCell(new Cell(Cell.CELL_FILLED, rowX, colY));
+					colY++;
+				}
+				rowX++;
 			}
 		}
 		
@@ -85,6 +120,18 @@ package dk.sebb.jazzlib.model
 						case 'playerspawn':
 							spawns.push(new Point(object.x + (object.width/2), object.y + (object.height/2)));
 							break;
+						case 'npc':
+							var npc:NPC = new NPC();
+							npc.body.position.x = object.x + (object.width/2);
+							npc.body.position.y = object.y + (object.height/2);
+							addMob(npc);
+							break;
+						case 'obj':
+							var obj:BlockMob = new BlockMob(object.width, object.height);
+							obj.body.position.x = object.x + (object.width/2);
+							obj.body.position.y = object.y + (object.height/2);
+							addMob(obj);
+							break;
 						default:
 							trace("unknow  object type (" + object.type + ") found in level!");
 							break;
@@ -102,24 +149,22 @@ package dk.sebb.jazzlib.model
 			}
 			
 			if(layer.name === 'function') {
-				collisionLayer = layer;
+				functionLayer = layer;
 			}
-			
-			/**
+		
 			if(layer.functional && layer.functional === "true") { //create phys objects for the tiles in functinal layers(physics),
 				for (var spriteForX:int = 0; spriteForX < tmxLoader.mapWidth; spriteForX++) {
 					for (var spriteForY:int = 0; spriteForY < tmxLoader.mapHeight; spriteForY++) {
 						var tileGid:int = int(layer.map[spriteForX][spriteForY]);
 						if(TileSet.tiles[tileGid]) {
-							var tileMob:PhysMob = new TileMob(BodyType.STATIC);
-							tileMob.body.position.x = 32 * spriteForX + 16;
-							tileMob.body.position.y = 32 * spriteForY + 16;
-							tileMob.hasPerspective = layer.perspective && layer.perspective === "true";
+							var tileMob:BlockMob = new BlockMob(tmxLoader.tileWidth, tmxLoader.tileHeight);
+							tileMob.body.position.x = tmxLoader.tileWidth * spriteForX + tmxLoader.tileWidth/2;
+							tileMob.body.position.y = tmxLoader.tileHeight * spriteForY + tmxLoader.tileHeight/2;
 							addMob(tileMob);
 						}
 					}
 				}
-			} else if(layer.perspective && layer.perspective === "true") {//create objects for tiles in perspective layers
+			}/* else if(layer.perspective && layer.perspective === "true") {//create objects for tiles in perspective layers
 				
 				for each(var object:TMXObject in layer.objects) {
 					var mob:Mob = new Mob();
@@ -131,8 +176,7 @@ package dk.sebb.jazzlib.model
 					mob.hasPerspective = true;
 					addMob(mob);
 				}
-			}
-			 * **/
+			}*/
 		}
 		
 	}

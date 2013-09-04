@@ -3,12 +3,12 @@
  * so you should not be creating multiple instances of these classes when you need a "new"
  * instead unload and reuse them to avoid memory leaks etc
  */
-package dk.sebb.jazzlib.controller
+package dk.sebb.burstLib.state
 {
+	import flash.display.MovieClip;
 	import flash.display.Stage;
-	import flash.events.EventDispatcher;
 
-	public class Controller extends EventDispatcher
+	public class State extends MovieClip
 	{
 		protected var stage:Stage;
 
@@ -16,6 +16,6 @@ package dk.sebb.jazzlib.controller
  * needs a Stage reference to bind event listerners like Event.EnterFrame
  * @param stage Stage
  */
-		public function Controller(stage:Stage) {}
+		public function State(stage:Stage) {}
 	}
 }

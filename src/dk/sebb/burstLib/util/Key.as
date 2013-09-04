@@ -2,7 +2,7 @@
  * This is a static used to manage which keys are currently pressed
  * To make this class work please call the static method Key.init with stage as a arguement to allot it to bind events to the keyboard
  */
-package dk.sebb.jazzlib.util
+package dk.sebb.burstLib.util
 {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
@@ -15,13 +15,13 @@ package dk.sebb.jazzlib.util
 		
 		private static var keyMap:Array = [];
 		
-		public static var stage:Stage;
+		private static var stage:Stage;
 
 /**
  * This class cannot be instantiated.
  * @return void
  */
-		public static function get instance():Key {
+		public function Key():void {
 			throw new Error('The Key Class is not supposed to be instatiated!');
 		}
 
@@ -32,7 +32,7 @@ package dk.sebb.jazzlib.util
  * @return Void
  */
 		public static function init(_stage:Stage):void {
-			if(!_stage) {
+			if(!stage) {
 				stage = _stage;
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
