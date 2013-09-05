@@ -3,8 +3,6 @@
  */
 package dk.sebb.burstLib.util.map
 {
-	import flash.geom.Point;
-
 	public class Cell
 	{
 		public static var CELL_FREE:uint = 0;

@@ -14,6 +14,11 @@
     <property name="type" value="physic"/>
    </properties>
   </tile>
+  <tile id="1">
+   <properties>
+    <property name="type" value="no_path"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="513" name="props" tilewidth="96" tileheight="96">
   <image source="props.png" width="512" height="512"/>
@@ -827,7 +832,7 @@
     <property name="type" value="obj"/>
    </properties>
   </object>
-  <object name="TestNPC" x="108" y="113" width="31" height="28">
+  <object name="TestNPC" x="206" y="319" width="21" height="24">
    <properties>
     <property name="type" value="npc"/>
    </properties>

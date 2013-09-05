@@ -85,11 +85,16 @@ package dk.sebb.burstLib.model
 		}
 		
 		public function parseMap():void {
+			map.tileSize = tmxLoader.tileWidth;
+			
 			var rowX:int = 0;
 			for each(var row:Array in functionLayer.map) {
 				var colY:int = 0;
 				for each(var col:Array in functionLayer.map) {
-					map.setCell(new Cell(Cell.CELL_FILLED, rowX, colY));
+					var tileGid:int = int(functionLayer.map[rowX][colY]);
+					if(TileSet.tiles[tileGid]) {
+						map.setCell(new Cell(Cell.CELL_FILLED, rowX, colY));
+					}
 					colY++;
 				}
 				rowX++;
@@ -156,7 +161,7 @@ package dk.sebb.burstLib.model
 				for (var spriteForX:int = 0; spriteForX < tmxLoader.mapWidth; spriteForX++) {
 					for (var spriteForY:int = 0; spriteForY < tmxLoader.mapHeight; spriteForY++) {
 						var tileGid:int = int(layer.map[spriteForX][spriteForY]);
-						if(TileSet.tiles[tileGid]) {
+						if(TileSet.tiles[tileGid] && TileSet.tiles[tileGid].type === "physic") {
 							var tileMob:BlockMob = new BlockMob(tmxLoader.tileWidth, tmxLoader.tileHeight);
 							tileMob.body.position.x = tmxLoader.tileWidth * spriteForX + tmxLoader.tileWidth/2;
 							tileMob.body.position.y = tmxLoader.tileHeight * spriteForY + tmxLoader.tileHeight/2;

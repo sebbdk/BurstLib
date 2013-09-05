@@ -6,6 +6,7 @@ package dk.sebb.burstLib.model
 	import flash.events.EventDispatcher;
 	
 	import dk.sebb.burstLib.model.event.ModelEvent;
+	import dk.sebb.burstLib.obj.Creature;
 	import dk.sebb.burstLib.obj.Mob;
 	import dk.sebb.burstLib.obj.Player;
 	
@@ -15,6 +16,7 @@ package dk.sebb.burstLib.model
 	public dynamic class LevelModel extends EventDispatcher
 	{
 		public var mobs:Vector.<Mob> = new Vector.<Mob>();
+		public var creatures:Vector.<Creature> = new Vector.<Creature>();
 		public var player:Player;
 		public var space:Space;
 		
@@ -24,21 +26,16 @@ package dk.sebb.burstLib.model
 		
 /**
  * Removed the given mob from the vector/list of mobs
- * Returns true on success
  * @param  mob Mob
- * @return boolean
+ * @return void
  */
-		public function removeMob(mob:Mob):Boolean {
-			for(var i:int = 0; i < mobs.length; i++) {
-				if(mobs[i] === mob) {
-					mobs.splice(i, 1);
-					mob.unload();
-					dispatchEvent(new ModelEvent(ModelEvent.REMOVE_MOB, mob));
-					return true;
-				}
+		public function removeMob(mob:Mob):void {
+			mobs.splice(mobs.indexOf(mob), 1);
+			if(mob is Creature) {
+				creatures.splice(creatures.indexOf(mob as Creature), 1);
 			}
-			
-			return false;
+			mob.unload();
+			dispatchEvent(new ModelEvent(ModelEvent.REMOVE_MOB, mob));
 		}
 
 /**
@@ -50,6 +47,12 @@ package dk.sebb.burstLib.model
 		public function addMob(mob:Mob):void {
 			Mob(mob).body.space = space;
 			mobs.push(mob);
+			
+			//add it to the creature array aswell if needed
+			if(mob is Creature) {
+				creatures.push(mob);
+			}
+			
 			dispatchEvent(new ModelEvent(ModelEvent.ADD_MOB, mob));
 		}
 		

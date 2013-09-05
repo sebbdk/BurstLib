@@ -3,8 +3,6 @@
  */
 package dk.sebb.burstLib.util.map
 {
-	
-
 	public class AStarMap
 	{
 		public var map:Array = new Array();
@@ -18,6 +16,8 @@ package dk.sebb.burstLib.util.map
 		private var closedList:Array;
 		
 		public function AStarMap() {}
+		
+		public var tileSize:int = 32;
 		
 		public function getCellFromCoords(x:Number, y:Number, cellSize:int):Cell {
 			return getCell(Math.floor(x/cellSize), Math.floor(y/cellSize));
@@ -42,15 +42,14 @@ package dk.sebb.burstLib.util.map
  */
 		public function getCell(x:int, y:int):Cell {
 			if(map[x] != null && map[x][y] != null) {
-				var c:Cell = new Cell();
-				c.cellType = Cell.CELL_FILLED;
-				c.x = x;
-				c.y = y;
-				setCell(c)
 				return map[x][y];
-			} else {
-				return null;
 			}
+			
+			var ec:Cell = new Cell();
+			ec.x = x;
+			ec.y = y;
+			setCell(ec)
+			return ec;
 		}
 
 /**
@@ -73,7 +72,7 @@ package dk.sebb.burstLib.util.map
  * @param  toY
  * @return Array
  */
-		public function findPath(fromX:int, fromY:int, toX:int, toY:int):Array {
+		public function findPath(fromX:int, fromY:int, toX:int, toY:int, scale:Boolean = true):Array {
 			reset();
 			
 			currentCell = getCell(fromX, fromY);
@@ -100,11 +99,18 @@ package dk.sebb.burstLib.util.map
 				if(count++ > 800) {//prevent a hang in case something goes awry.....????..
 					//nope.. this is done when the origin cell is not found within 800 steps, 
 					//do some testing, this should NEVER happen, aka not seen when i used it the last time
+					
+					//this happens if we have a path longer than 800 steps
 					trace("i am hanging!");
 					return null
 				};
 				
-				solutionPath.push([cellPointer.x, cellPointer.y]);
+				if(scale) {
+					solutionPath.push([cellPointer.x*tileSize+tileSize/2, cellPointer.y*tileSize+tileSize/2]);
+				} else {
+					solutionPath.push([cellPointer.x, cellPointer.y]);
+				}
+				
 				cellPointer = cellPointer.parentCell;					
 			}
 			
@@ -136,7 +142,21 @@ package dk.sebb.burstLib.util.map
 			
 			//adjacent tiles
 			var adjacentCells:Array = new Array();
-			var arryPtr:Cell;			
+			var checkCells:Array = [
+				getCell(currentCell.x+1, currentCell.y),
+				getCell(currentCell.x-1, currentCell.y),
+				getCell(currentCell.x, currentCell.y+1),
+				getCell(currentCell.x, currentCell.y-1)
+			];
+			
+			for each(var checkCell:Cell in checkCells) {
+				if(checkCell.cellType != Cell.CELL_FILLED && closedList.indexOf(checkCell) == -1) {
+					adjacentCells.push(checkCell);
+				}
+			}
+			
+			/*
+			var arryPtr:Cell;
 			
 			//get the adjacent tiles
 			for(var xx:int = -1; xx <= 1; xx++) {				
@@ -148,7 +168,7 @@ package dk.sebb.burstLib.util.map
 						}
 					}
 				}						
-			}
+			}*/
 			
 			var g:int;
 			var h:int;

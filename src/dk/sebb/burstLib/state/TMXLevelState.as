@@ -43,7 +43,7 @@ package dk.sebb.burstLib.state
 			}
 			
 			if(debug) {
-				physDebug = physDebug ? physDebug:new ShapeDebug(width, height);
+				physDebug = physDebug ? physDebug:new ShapeDebug(width ? width:512, height ? height:512);
 				addChild(physDebug.display);
 			}
 			

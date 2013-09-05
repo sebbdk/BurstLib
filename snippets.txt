@@ -1,0 +1,38 @@
+/**
+ * Ray cast testing
+ * @type Nape
+ */
+var v1:Vec2 = creatures[0].body.position;
+var v2:Vec2 = player.body.position;
+var ray : Ray = Ray.fromSegment(v1, v2.sub(v1));
+ray.maxDistance = Vec2.distance(v1, v2);
+var rayResult:RayResult = space.rayCast(ray);
+trace(rayResult,  creatures[0]);//null [object NPC] if in line of sight, otherwise a rayresult is returned
+//note we can use some filter/rotation stuff i think
+//https://github.com/CreateSomethingWithStarling/NapeSamples/blob/master/src/SpatialQueries.as
+
+
+/**
+ * remove item from array(mobs)
+ * @type AS3
+ */
+for(var i:int = 0; i < mobs.length; i++) {
+	if(mobs[i] === mob) {
+		mobs.splice(i, 1);
+		mob.unload();
+		dispatchEvent(new ModelEvent(ModelEvent.REMOVE_MOB, mob));
+		
+		//remove it from the creature array aswell if needed
+		if(mob is Creature) {
+			for(var c:int = 0; i < creatures.length; c++) {
+				if(mobs[c] === mob) {
+					creatures.splice(i, 1);
+				}
+			}
+		}
+		
+		return true;
+	}
+}
+
+return false;
