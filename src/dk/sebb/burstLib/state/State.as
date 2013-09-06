@@ -10,7 +10,6 @@ package dk.sebb.burstLib.state
 
 	public class State extends MovieClip
 	{
-		protected var stage:Stage;
 
 /**
  * needs a Stage reference to bind event listerners like Event.EnterFrame

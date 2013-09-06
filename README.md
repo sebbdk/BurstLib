@@ -1,10 +1,11 @@
 # Jazzlib - Draft
 
 #TODO
+Preloader
+Support embedded assets in model
 Shooting
 	send target collision group with shot
 Line of sight
-	ignore other of same type
 
 JazzLib is a mini framework and a library collection, using git sub-repositories, that is made for quick game prototyping.
 

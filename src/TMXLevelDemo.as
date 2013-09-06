@@ -15,7 +15,7 @@ package
 			Key.init(stage);
 			
 			levelState = new TMXLevelState(stage);
-			levelState.load('../levels/level01/');
+			levelState.load('../levels/level02/');
 			addChild(levelState);
 		}
 	}

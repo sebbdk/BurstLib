@@ -3,12 +3,12 @@
  */
 package dk.sebb.burstLib.state
 {
+	import dk.sebb.burstLib.model.TMXLevelModel;
+	import dk.sebb.burstLib.obj.Mob;
+	
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.utils.getTimer;
-	
-	import dk.sebb.burstLib.model.TMXLevelModel;
-	import dk.sebb.burstLib.obj.Mob;
 	
 	import nape.util.ShapeDebug;
 
@@ -27,6 +27,8 @@ package dk.sebb.burstLib.state
 		public function LevelState(stage:Stage, fps:int = 60)
 		{
 			this.fps = fps;
+			scaleX = 2;
+			scaleY = 2;
 			super(stage);
 		}
 
@@ -58,6 +60,11 @@ package dk.sebb.burstLib.state
  * @return void
  */
 		public function unload():void {}
+		
+		public function updateCamera():void {
+			x = (-(model.player.body.position.x * scaleX) + stage.stageWidth/2);
+			y = (-(model.player.body.position.y * scaleY) + stage.stageHeight/2);
+		}
 
 /**
  * Updates all mobs, physics if you have any etc
@@ -75,6 +82,8 @@ package dk.sebb.burstLib.state
 				for each(var mob:Mob in model.mobs) {
 					mob.update(model);
 				}
+				
+				updateCamera();
 				
 				lastFrameTime = getTimer();
 			}
