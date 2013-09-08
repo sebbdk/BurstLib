@@ -4,13 +4,13 @@
   <property name="data" value="data.json"/>
  </properties>
  <tileset firstgid="1" name="Ground" tilewidth="32" tileheight="32">
-  <image source="../../../Indiespeedrun2013/levels/level03/tilesheet.png" width="512" height="512"/>
+  <image source="tilesheet.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="257" name="props" tilewidth="96" tileheight="96">
-  <image source="../../../Indiespeedrun2013/levels/level03/props.png" width="512" height="512"/>
+  <image source="props.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="282" name="tile_function" tilewidth="32" tileheight="32">
-  <image source="../../../Indiespeedrun2013/levels/level03/tile_function.png" width="512" height="512"/>
+  <image source="tile_function.png" width="512" height="512"/>
   <tile id="0">
    <properties>
     <property name="body" value="static"/>
