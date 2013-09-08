@@ -6,9 +6,9 @@ package dk.sebb.burstLib.model
 	import flash.events.EventDispatcher;
 	
 	import dk.sebb.burstLib.model.event.ModelEvent;
-	import dk.sebb.burstLib.obj.Creature;
+	import dk.sebb.burstLib.obj.creatures.Creature;
 	import dk.sebb.burstLib.obj.Mob;
-	import dk.sebb.burstLib.obj.Player;
+	import dk.sebb.burstLib.obj.creatures.Player;
 	
 	import nape.geom.Vec2;
 	import nape.space.Space;
@@ -45,7 +45,8 @@ package dk.sebb.burstLib.model
  * @return boolean
  */
 		public function addMob(mob:Mob):void {
-			Mob(mob).body.space = space;
+			mob.body.space = space;
+			mob.init(this as TMXLevelModel);
 			mobs.push(mob);
 			
 			//add it to the creature array aswell if needed

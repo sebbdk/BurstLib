@@ -1118,7 +1118,7 @@
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object name="testDetector01" x="122" y="116" width="43" height="42">
+  <object name="testDetector01" x="141" y="129" width="43" height="42">
    <properties>
     <property name="onEnter" value="say('Hello world from tiled!\nMultiline message test\nhello!');"/>
     <property name="onExit" value="hideInfo();"/>

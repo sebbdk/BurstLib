@@ -5,7 +5,6 @@
 package dk.sebb.burstLib.obj
 {
 	import dk.sebb.burstLib.model.TMXLevelModel;
-	import dk.sebb.burstLib.util.map.Cell;
 	
 	import nape.geom.Vec2;
 	import nape.phys.Body;
@@ -17,7 +16,8 @@ package dk.sebb.burstLib.obj
 		public var body:Body;
 		public var poly:Polygon;
 		
-		public function Mob(type:BodyType = null, poly:Polygon = null) {
+		public function Mob(type:BodyType = null, poly:Polygon = null, static:Boolean = false) {
+			
 			body = new Body(type || BodyType.STATIC, new Vec2(50, 50));
 
 			if(animator) {
@@ -25,10 +25,14 @@ package dk.sebb.burstLib.obj
 				animator.y = (animator.height/3)/2;
 				body.shapes.add(poly);
 			} else {
-				poly = poly ? poly:new Polygon(Polygon.box(10,10));
-				body.shapes.add(poly);
+				if(!static) {
+					poly = poly ? poly:new Polygon(Polygon.box(10,10));
+					body.shapes.add(poly);
+				}
 			}
 		}
+		
+		public function init(model:TMXLevelModel):void {}
 		
 		public function update(model:TMXLevelModel):void {
 			x = body.position.x;
@@ -38,6 +42,9 @@ package dk.sebb.burstLib.obj
 		
 		public function unload():void {
 			body.space = null;
+			if(parent) {
+				parent.removeChild(this);
+			}
 		}
 	}
 }
